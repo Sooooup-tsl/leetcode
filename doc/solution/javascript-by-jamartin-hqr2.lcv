@@ -1,0 +1,41 @@
+> 方法一：模拟
+
+模拟：因为两个链表中的数字位本身就是反的，刚好符合我们平时的计算方法——从后往前加，然后进位；所以先将每一位相加，存入一个数组，这个数组也是反着的
+
+对数组中的数据进行进位处理：
+如果上一个数字大于等于10，那么当前数字+1（也不用担心会加到20，因为两个个位数相加最多到18，那再加 1 也就是19）
+加了1之后再进行判断，判断当前值是否大于等于10，如果大于等于10，就将当前值-10赋给链表
+
+* js
+
+```js
+var addTwoNumbers = function(l1, l2) {
+    let arr = [];
+    let i = 0;
+    while(l1 || l2){
+        let num1 = 0, num2 = 0;
+        if(l1) num1 = l1.val
+        if(l2) num2 = l2.val
+        arr[i] = num1 + num2;
+        if(l1) l1 = l1.next
+        if(l2) l2 = l2.next
+        i++;
+    }
+    let res = new ListNode(0);
+    let dummy = res; 
+    for(let i =0;i<arr.length;i++){
+        if(arr[i-1] >= 10) arr[i] += 1;
+        let sum = arr[i];
+        if(arr[i] >= 10) {
+            sum -= 10;
+        }
+        dummy.next = new ListNode(sum);
+        dummy = dummy.next;
+        if(i===arr.length-1&&arr[i] >= 10){
+            dummy.next = new ListNode(1);
+        }
+    }
+    return res.next;
+};
+```
+

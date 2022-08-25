@@ -1,0 +1,33 @@
+[详细刷题视频合集](https://xiaochen1024.com/series/6196129fc1553b002e57bef5/6196208ec1553b002e57bef6)      [本题视频讲解](https://xiaochen1024.com/video?id=6285ee99ede03c002e46b206)
+[刷题笔记](https://xiaochen1024.com/courseware/60b4f11ab1aa91002eb53b18)
+维护当前两个篮子里不同类型的水果
+更新当前轮次摘得的水果的类型并记录其个数
+
+* 
+
+```
+var totalFruit = function (tree) {
+//初始状态的cache，用Set去重
+  let cache = [...new Set(tree)].slice(0, 2), index = 0, max = 0, result = 0, oldFruit = cache[0]
+  for (let fruit of tree) {
+    if (cache.includes(fruit)) {
+      result++
+      if (fruit === oldFruit) index++
+      else index = 1
+      oldFruit = fruit
+    }
+    else {
+      // 新摘得这个水果不在篮子里时,两个篮子分别放上一次摘得水果和这次摘的水果
+      cache = [oldFruit, fruit]
+      max = max < result ? result : max
+     // 上一次摘得水果类型的个数 + 新摘类型水果的个数(这里不要忘记这一轮也摘了个水果)
+      result = index + 1
+    // 将这一轮摘的水果记录
+      index = 1
+      oldFruit = fruit
+    }
+  }
+  return max < result ? result : max
+};
+```
+
