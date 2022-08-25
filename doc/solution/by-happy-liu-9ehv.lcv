@@ -1,0 +1,90 @@
+class Solution {
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+// step1：将两个链表转换成字符串
+StringBuilder l1ValueString = new StringBuilder(Integer.toString(l1.val));
+StringBuilder l2ValueString = new StringBuilder(Integer.toString(l2.val));
+while (l1.next != null) {
+l1 = l1.next;
+l1ValueString.append(l1.val);
+}
+while (l2.next != null) {
+l2 = l2.next;
+l2ValueString.append(l2.val);
+}
+// step2：将两个转化后的字符串中的值相加，得到一个字符串
+StringBuilder valueSum = this.twoListAdd(l1ValueString.toString().toCharArray(), l2ValueString.toString().toCharArray());
+
+        char[] chars = valueSum.toString().toCharArray();
+        // step3：将相加后的字符串转换成链表
+        ListNode listNode = new ListNode(Integer.parseInt(String.valueOf(chars[0])));
+        if (chars.length <= 1) {
+            return listNode;
+        }
+        for (int i = 1; i < chars.length; i++) {
+            this.addNode(listNode, Integer.parseInt(String.valueOf(chars[i])));
+        }
+        return listNode;
+    }
+    
+    /**
+     * 添加链表的next节点
+     *
+     * @param preNode 前一个节点
+     * @param value   节点值
+     */
+    private void addNode(ListNode preNode, int value) {
+        if (preNode.next == null) {
+            preNode.next = new ListNode(value);
+            return;
+        }
+        while (true) {
+            preNode = preNode.next;
+            if (preNode.next == null) {
+                addNode(preNode, value);
+                return;
+            }
+        }
+    }
+    
+    /**
+     * 两个字符数组相加
+     *
+     * @param l1List 字符数组
+     * @param l2List 字符数组
+     * @return 相加之后的字符串
+     */
+    private StringBuilder twoListAdd(char[] l1List, char[] l2List) {
+    
+        if (l1List.length > l2List.length) {
+            return twoListAdd(l2List, l1List);
+        }
+        // 先添加位数较大的list中的高位元素，再用较小的list遍历相加
+        StringBuilder bigValue = new StringBuilder();
+        StringBuilder smallValue = new StringBuilder();
+        for (int i = l1List.length; i < l2List.length; i++) {
+            bigValue.append(l2List[i]);
+        }
+        // 两数之和是否大于9，大于则下一个数进一
+        boolean flag = false;
+        for (int i = 0; i < l1List.length; i++) {
+            String sum;
+            if (flag) {
+                sum = String.valueOf(Integer.parseInt(l1List[i] + "") + Integer.parseInt(l2List[i] + "") + 1);
+            } else {
+                sum = String.valueOf(Integer.parseInt(l1List[i] + "") + Integer.parseInt(l2List[i] + ""));
+            }
+            if (sum.length() > 1) {
+                sum = sum.substring(1);
+                flag = true;
+            } else {
+                flag = false;
+            }
+            smallValue.append(sum);
+        }
+        if (flag) {
+            bigValue = this.twoListAdd(bigValue.toString().toCharArray(), new char[]{'1'});
+        }
+        return smallValue.append(bigValue);
+    }
+
+}

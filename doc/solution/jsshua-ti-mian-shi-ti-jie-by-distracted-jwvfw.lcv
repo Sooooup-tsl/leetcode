@@ -1,0 +1,24 @@
+[详细刷题视频合集](https://xiaochen1024.com/series/6196129fc1553b002e57bef5/6196208ec1553b002e57bef6)      
+[刷题笔记](https://xiaochen1024.com/courseware/60b4f11ab1aa91002eb53b18)
+
+如果不存在为 0 的数，那么肯定能到达最后一个位置
+除最后一位外，如果 i 位置为 0，那么向前查找是否存在 j 位置使得 j + nums[j] > i
+最后一位是否为 0 不影响结果，所以不用判断
+
+* 
+
+```
+var canJump = function(nums) {
+  let len = nums.length;
+  let pos = undefined;
+  for (let i = len - 2; i >= 0; i--) {
+    if (nums[i] === 0 && pos === undefined)
+      pos = i;
+    if (pos !== undefined && i + nums[i] > pos)
+      pos = undefined
+  }
+  return pos === undefined
+};
+
+```
+

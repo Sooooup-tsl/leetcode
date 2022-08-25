@@ -1,0 +1,31 @@
+[详细刷题视频合集](https://xiaochen1024.com/series/6196129fc1553b002e57bef5/6196208ec1553b002e57bef6)      
+[刷题笔记](https://xiaochen1024.com/courseware/60b4f11ab1aa91002eb53b18)
+
+* 
+
+```
+var totalFruit = function (tree) {
+    let max = 0
+    let map = new Map()
+    let left = 0
+    for (let i = 0; i < tree.length; i++) {
+        const right = tree[i]
+        if (map.size === 2 && !map.has(right)) {
+            max = Math.max(max, [...map.values()].reduce((prev, cur) => prev + cur))
+            while (map.size > 1) {
+                const leftItem = tree[left]
+                map.set(leftItem, map.get(leftItem) - 1)
+                left++
+                if (!map.get(leftItem)) map.delete(leftItem)
+            }
+        }
+        map.set(right, map.get(right) ? map.get(right) + 1 : 1)
+    }
+    max = Math.max(max, [...map.values()].reduce((prev, cur) => prev + cur))
+
+    return max
+};
+
+
+```
+

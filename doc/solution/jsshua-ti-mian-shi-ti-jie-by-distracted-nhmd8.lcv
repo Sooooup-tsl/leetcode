@@ -1,0 +1,34 @@
+[详细刷题视频合集](https://xiaochen1024.com/series/6196129fc1553b002e57bef5/6196208ec1553b002e57bef6)      
+[刷题笔记](https://xiaochen1024.com/courseware/60b4f11ab1aa91002eb53b18)
+
+要求不使用额外空间，但输出数组不算额外空间，所以我们可以把缓存数据放于输出中。
+
+首先从小到大计算前缀积，放入输出数组
+
+然后从大到小计算后缀积，并类乘到输出数组中。
+
+* 
+
+```
+var productExceptSelf = function(nums) {
+    let result = new Array(nums.length);
+    let product = 1;
+
+    //计算前缀积
+    for(let i = 0;i<nums.length;i++){
+        result[i] = product;
+        product *= nums[i];
+    }
+
+    product = 1;
+    //计算后缀积
+    for(let i = nums.length - 1;i>=0;i--){
+        result[i] *= product;
+        product *= nums[i];
+    }
+
+    return result;
+};
+
+```
+
